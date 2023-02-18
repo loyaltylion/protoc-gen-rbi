@@ -218,6 +218,10 @@ func RubyMethodParamType(method pgs.Method) string {
 	return rubyMethodType(method.Input(), method.ClientStreaming())
 }
 
+func RubyMethodParamFields(method pgs.Method) []pgs.Field {
+	return method.Input().Fields()
+}
+
 func RubyMethodReturnType(method pgs.Method) string {
 	return rubyMethodType(method.Output(), method.ServerStreaming())
 }

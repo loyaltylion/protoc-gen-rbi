@@ -41,6 +41,7 @@ func (m *rbiModule) InitContext(c pgs.BuildContext) {
 		"rubyInitializerFieldType": ruby_types.RubyInitializerFieldType,
 		"rubyFieldValue":           ruby_types.RubyFieldValue,
 		"rubyMethodParamType":      ruby_types.RubyMethodParamType,
+		"rubyMethodParamFields":    ruby_types.RubyMethodParamFields,
 		"rubyMethodReturnType":     ruby_types.RubyMethodReturnType,
 	}
 
@@ -232,12 +233,24 @@ module {{ rubyPackage .File }}::{{ .Name }}
     end{{ end }}
   end{{ range .Methods }}
 
+{{- $fields := rubyMethodParamFields . }}
+{{ if willGenerateInvalidRuby $fields }}
+  # Constants of the form Constant_1 are invalid. We've declined to type this as a result, taking a hash instead.
+  sig { params(args: T::Hash[T.untyped, T.untyped]).returns({{ rubyMethodReturnType . }}) }
+  def self.{{ .Name.LowerSnakeCase }}(args); end
+{{- else if gt (len $fields) 0 }}
   sig do
-    params(
-      request: {{ rubyMethodParamType . }}
+    params({{ $index := 0 }}{{ range $fields }}{{ if gt $index 0 }},{{ end }}{{ $index = increment $index }}
+      {{ .Name }}: {{ rubyInitializerFieldType . }}{{ end }}
     ).returns({{ rubyMethodReturnType . }})
   end
-  def self.{{ .Name.LowerSnakeCase }}(request)
-  end{{ end }}
+  def self.{{ .Name.LowerSnakeCase }}({{ $index := 0 }}{{ range $fields }}{{ if gt $index 0 }},{{ end }}{{ $index = increment $index }}
+    {{ .Name }}: {{ rubyFieldValue . }}{{ end }}
+  )
+  end
+{{- else }}
+  sig { returns({{ rubyMethodReturnType . }}) }
+  def self.{{ .Name.LowerSnakeCase }}; end
+{{ end }}{{- end }}
 end
 {{ end }}`

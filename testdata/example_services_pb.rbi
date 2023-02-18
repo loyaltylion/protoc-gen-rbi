@@ -26,4 +26,14 @@ module Example::Greeter
     def hello(request)
     end
   end
+
+  sig do
+    params(
+      name: T.nilable(String)
+    ).returns(Example::Response)
+  end
+  def self.hello(
+    name: ""
+  )
+  end
 end

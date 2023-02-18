@@ -34,6 +34,26 @@ module Testdata::SimpleMathematics
     def median(request)
     end
   end
+
+  sig do
+    params(
+      value: T.nilable(Integer)
+    ).returns(Testdata::Subdir::IntegerMessage)
+  end
+  def self.negate(
+    value: 0
+  )
+  end
+
+  sig do
+    params(
+      value: T.nilable(Integer)
+    ).returns(Testdata::Subdir::IntegerMessage)
+  end
+  def self.median(
+    value: 0
+  )
+  end
 end
 
 module Testdata::ComplexMathematics
@@ -75,5 +95,35 @@ module Testdata::ComplexMathematics
     end
     def periodic_max(request)
     end
+  end
+
+  sig do
+    params(
+      value: T.nilable(Integer)
+    ).returns(T::Enumerable[Testdata::Subdir::IntegerMessage])
+  end
+  def self.fibonacci(
+    value: 0
+  )
+  end
+
+  sig do
+    params(
+      value: T.nilable(Integer)
+    ).returns(T::Enumerable[Testdata::Subdir::IntegerMessage])
+  end
+  def self.running_max(
+    value: 0
+  )
+  end
+
+  sig do
+    params(
+      value: T.nilable(Integer)
+    ).returns(T::Enumerable[Testdata::Subdir::IntegerMessage])
+  end
+  def self.periodic_max(
+    value: 0
+  )
   end
 end
