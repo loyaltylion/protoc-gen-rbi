@@ -230,6 +230,14 @@ module {{ rubyPackage .File }}::{{ .Name }}
     end
     def {{ .Name.LowerSnakeCase }}(request)
     end{{ end }}
+  end{{ range .Methods }}
+
+  sig do
+    params(
+      request: {{ rubyMethodParamType . }}
+    ).returns({{ rubyMethodReturnType . }})
   end
+  def self.{{ .Name.LowerSnakeCase }}(request)
+  end{{ end }}
 end
 {{ end }}`

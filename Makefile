@@ -7,6 +7,10 @@ install:
 vendor:
 	go mod vendor
 
+build:
+	GOOS=darwin GOARCH=arm64 go build -o protoc-gen-rbi-darwin-arm64
+	GOOS=linux GOARCH=amd64 go build -o protoc-gen-rbi-linux-amd64
+
 test: init install
 	$(eval PROTOS := $(shell cd testdata && find . -name "*.proto" | sed 's|^./||'))
 	$(eval GRPC_TOOLS_LOCATION := $(shell bundle show grpc-tools))
