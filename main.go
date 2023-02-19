@@ -6,6 +6,8 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/Masterminds/sprig/v3"
+
 	"github.com/coinbase/protoc-gen-rbi/ruby_types"
 
 	pgs "github.com/lyft/protoc-gen-star"
@@ -28,6 +30,7 @@ func RBI() *rbiModule { return &rbiModule{ModuleBase: &pgs.ModuleBase{}} }
 func (m *rbiModule) InitContext(c pgs.BuildContext) {
 	m.ModuleBase.InitContext(c)
 	m.ctx = pgsgo.InitContext(c.Parameters())
+	sprigFuncs := sprig.FuncMap()
 
 	funcs := map[string]interface{}{
 		"increment":                m.increment,
@@ -43,6 +46,9 @@ func (m *rbiModule) InitContext(c pgs.BuildContext) {
 		"rubyMethodParamType":      ruby_types.RubyMethodParamType,
 		"rubyMethodParamFields":    ruby_types.RubyMethodParamFields,
 		"rubyMethodReturnType":     ruby_types.RubyMethodReturnType,
+		"rubyComment":              ruby_types.RubyComment,
+		"indent":                   sprigFuncs["indent"],
+		"nindent":                  sprigFuncs["nindent"],
 	}
 
 	m.tpl = template.Must(template.New("rbi").Funcs(funcs).Parse(tpl))
@@ -154,10 +160,13 @@ class {{ rubyMessageType . }}
   sig {void}
   def initialize; end
 {{ end }}{{ range .Fields }}
+{{- $comment := rubyComment .SourceCodeInfo }}
+{{- if gt (len $comment) 0 }}{{ $comment | nindent 2 }}{{- end }}
   sig { returns({{ rubyGetterFieldType . }}) }
   def {{ .Name }}
   end
-
+{{- $comment := rubyComment .SourceCodeInfo }}
+{{ if gt (len $comment) 0 }}{{ $comment | nindent 2 }}{{- end }}
   sig { params(value: {{ rubySetterFieldType . }}).void }
   def {{ .Name }}=(value)
   end
@@ -224,6 +233,8 @@ module {{ rubyPackage .File }}::{{ .Name }}
     def initialize(host, creds, **kw)
     end{{ range .Methods }}
 
+{{- $comment := rubyComment .SourceCodeInfo }}
+{{ if gt (len $comment) 0 }}{{ $comment | nindent 4 }}{{- end }}
     sig do
       params(
         request: {{ rubyMethodParamType . }}
@@ -234,7 +245,9 @@ module {{ rubyPackage .File }}::{{ .Name }}
   end{{ range .Methods }}
 
 {{- $fields := rubyMethodParamFields . }}
-{{ if willGenerateInvalidRuby $fields }}
+{{- $comment := rubyComment .SourceCodeInfo }}
+{{ if gt (len $comment) 0 }}{{ $comment | nindent 2 }}{{ end }}
+{{- if willGenerateInvalidRuby $fields }}
   # Constants of the form Constant_1 are invalid. We've declined to type this as a result, taking a hash instead.
   sig { params(args: T::Hash[T.untyped, T.untyped]).returns({{ rubyMethodReturnType . }}) }
   def self.{{ .Name.LowerSnakeCase }}(args); end

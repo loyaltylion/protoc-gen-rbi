@@ -226,6 +226,29 @@ func RubyMethodReturnType(method pgs.Method) string {
 	return rubyMethodType(method.Output(), method.ServerStreaming())
 }
 
+func RubyComment(source pgs.SourceCodeInfo) string {
+	comments := strings.TrimSpace(source.LeadingComments())
+
+	if len(comments) == 0 {
+		return ""
+	}
+
+	ruby_comments := make([]string, 0)
+
+	for _, line := range strings.Split(comments, "\n") {
+		line = strings.TrimSpace(line)
+		comment_line := "#"
+
+		if len(line) != 0 {
+			comment_line = comment_line + " " + line
+		}
+
+		ruby_comments = append(ruby_comments, comment_line)
+	}
+
+	return strings.Join(ruby_comments, "\n")
+}
+
 func rubyMethodType(message pgs.Message, streaming bool) string {
 	t := RubyMessageType(message)
 	if streaming {

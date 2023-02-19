@@ -16,6 +16,8 @@ module Testdata
       self.service_name = 'testdata.SimpleMathematics'
 
       # Negates the input
+      #
+      # Expects an Integer and will return an Integer
       rpc :Negate, ::Testdata::Subdir::IntegerMessage, ::Testdata::Subdir::IntegerMessage
       # Report the median of a stream of integers
       rpc :Median, stream(::Testdata::Subdir::IntegerMessage), ::Testdata::Subdir::IntegerMessage

@@ -37,10 +37,12 @@ class Example::Request
   )
   end
 
+  # The name of the person who will be greeted
   sig { returns(String) }
   def name
   end
 
+  # The name of the person who will be greeted
   sig { params(value: String).void }
   def name=(value)
   end
@@ -97,10 +99,12 @@ class Example::Response
   )
   end
 
+  # Greeting message, personalised for the individual's name
   sig { returns(String) }
   def greeting
   end
 
+  # Greeting message, personalised for the individual's name
   sig { params(value: String).void }
   def greeting=(value)
   end

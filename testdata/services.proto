@@ -7,6 +7,8 @@ import "subdir/messages.proto";
 // The mathematics service definition.
 service SimpleMathematics {
   // Negates the input
+  //
+  // Expects an Integer and will return an Integer
   rpc Negate (subdir.IntegerMessage) returns (subdir.IntegerMessage);
 
   // Report the median of a stream of integers
