@@ -2,7 +2,7 @@ init:
 	bundle install
 
 install:
-	go install -mod=vendor .
+	go install .
 
 vendor:
 	go mod vendor
