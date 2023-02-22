@@ -44,22 +44,22 @@ module Testdata::SimpleMathematics
   # Expects an Integer and will return an Integer
   sig do
     params(
-      value: T.nilable(Integer)
+      value: Integer
     ).returns(Testdata::Subdir::IntegerMessage)
   end
   def self.negate(
-    value: 0
+    value: 
   )
   end
 
   # Report the median of a stream of integers
   sig do
     params(
-      value: T.nilable(Integer)
+      value: Integer
     ).returns(Testdata::Subdir::IntegerMessage)
   end
   def self.median(
-    value: 0
+    value: 
   )
   end
 end
@@ -111,33 +111,33 @@ module Testdata::ComplexMathematics
   # Stream the first N numbers in the Fibonacci sequence
   sig do
     params(
-      value: T.nilable(Integer)
+      value: Integer
     ).returns(T::Enumerable[Testdata::Subdir::IntegerMessage])
   end
   def self.fibonacci(
-    value: 0
+    value: 
   )
   end
 
   # Accept a stream of integers, and report whenever a new maximum is found
   sig do
     params(
-      value: T.nilable(Integer)
+      value: Integer
     ).returns(T::Enumerable[Testdata::Subdir::IntegerMessage])
   end
   def self.running_max(
-    value: 0
+    value: 
   )
   end
 
   # Accept a stream of integers, and report the maximum every second
   sig do
     params(
-      value: T.nilable(Integer)
+      value: Integer
     ).returns(T::Enumerable[Testdata::Subdir::IntegerMessage])
   end
   def self.periodic_max(
-    value: 0
+    value: 
   )
   end
 end

@@ -29,11 +29,11 @@ class Example::Lowercase
 
   sig do
     params(
-      example_proto_field: T.nilable(String)
+      example_proto_field: String
     ).void
   end
   def initialize(
-    example_proto_field: ""
+    example_proto_field: 
   )
   end
 
@@ -89,11 +89,11 @@ class Example::Lowercase_with_underscores
 
   sig do
     params(
-      example_proto_field: T.nilable(String)
+      example_proto_field: String
     ).void
   end
   def initialize(
-    example_proto_field: ""
+    example_proto_field: 
   )
   end
 

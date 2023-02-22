@@ -34,22 +34,23 @@ func (m *rbiModule) InitContext(c pgs.BuildContext) {
 	sprigFuncs := sprig.FuncMap()
 
 	funcs := map[string]interface{}{
-		"increment":                m.increment,
-		"optional":                 m.optional,
-		"optionalOneOf":            m.optionalOneOf,
-		"willGenerateInvalidRuby":  m.willGenerateInvalidRuby,
-		"rubyPackage":              ruby_types.RubyPackage,
-		"rubyMessageType":          ruby_types.RubyMessageType,
-		"rubyGetterFieldType":      ruby_types.RubyGetterFieldType,
-		"rubySetterFieldType":      ruby_types.RubySetterFieldType,
-		"rubyInitializerFieldType": ruby_types.RubyInitializerFieldType,
-		"rubyFieldValue":           ruby_types.RubyFieldValue,
-		"rubyMethodParamType":      ruby_types.RubyMethodParamType,
-		"rubyMethodParamFields":    ruby_types.RubyMethodParamFields,
-		"rubyMethodReturnType":     ruby_types.RubyMethodReturnType,
-		"rubyComment":              ruby_types.RubyComment,
-		"indent":                   sprigFuncs["indent"],
-		"nindent":                  sprigFuncs["nindent"],
+		"increment":                    m.increment,
+		"optional":                     m.optional,
+		"optionalOneOf":                m.optionalOneOf,
+		"willGenerateInvalidRuby":      m.willGenerateInvalidRuby,
+		"rubyPackage":                  ruby_types.RubyPackage,
+		"rubyMessageType":              ruby_types.RubyMessageType,
+		"rubyGetterFieldType":          ruby_types.RubyGetterFieldType,
+		"rubySetterFieldType":          ruby_types.RubySetterFieldType,
+		"rubyInitializerFieldType":     ruby_types.RubyInitializerFieldType,
+		"rubySortFieldsForInitializer": ruby_types.RubySortFieldsForInitializer,
+		"rubyFieldValue":               ruby_types.RubyFieldValue,
+		"rubyMethodParamType":          ruby_types.RubyMethodParamType,
+		"rubyMethodParamFields":        ruby_types.RubyMethodParamFields,
+		"rubyMethodReturnType":         ruby_types.RubyMethodReturnType,
+		"rubyComment":                  ruby_types.RubyComment,
+		"indent":                       sprigFuncs["indent"],
+		"nindent":                      sprigFuncs["nindent"],
 	}
 
 	m.tpl = template.Must(template.New("rbi").Funcs(funcs).Parse(tpl))
@@ -145,17 +146,18 @@ class {{ rubyMessageType . }}
   sig { returns(::Google::Protobuf::Descriptor) }
   def self.descriptor
   end
-{{ if willGenerateInvalidRuby .Fields }}
+{{- $initializer_fields := rubySortFieldsForInitializer .Fields }}
+{{ if willGenerateInvalidRuby $initializer_fields }}
   # Constants of the form Constant_1 are invalid. We've declined to type this as a result, taking a hash instead.
   sig { params(args: T::Hash[T.untyped, T.untyped]).void }
   def initialize(args); end
-{{ else if gt (len .Fields) 0 }}
+{{ else if gt (len $initializer_fields) 0 }}
   sig do
-    params({{ $index := 0 }}{{ range .Fields }}{{ if gt $index 0 }},{{ end }}{{ $index = increment $index }}
+    params({{ $index := 0 }}{{ range $initializer_fields }}{{ if gt $index 0 }},{{ end }}{{ $index = increment $index }}
       {{ .Name }}: {{ rubyInitializerFieldType . }}{{ end }}
     ).void
   end
-  def initialize({{ $index := 0 }}{{ range .Fields }}{{ if gt $index 0 }},{{ end }}{{ $index = increment $index }}
+  def initialize({{ $index := 0 }}{{ range $initializer_fields }}{{ if gt $index 0 }},{{ end }}{{ $index = increment $index }}
     {{ .Name }}: {{ rubyFieldValue . }}{{ end }}
   )
   end

@@ -3,6 +3,7 @@ package ruby_types
 import (
 	"fmt"
 	"log"
+	"sort"
 	"strings"
 
 	pgs "github.com/lyft/protoc-gen-star"
@@ -42,6 +43,22 @@ func RubyPackage(file pgs.File) string {
 	return upperCamelCase(pkg)
 }
 
+// Sort fields for use in an initializer. This will place optional fields at
+// the end, which is required by Ruby
+func RubySortFieldsForInitializer(fields []pgs.Field) []pgs.Field {
+	sorted_fields := make([]pgs.Field, len(fields))
+	copy(sorted_fields, fields)
+
+	sort.Slice(sorted_fields, func(i, j int) bool {
+		a := sorted_fields[i]
+		b := sorted_fields[j]
+
+		return b.Descriptor().GetProto3Optional() && !a.Descriptor().GetProto3Optional()
+	})
+
+	return sorted_fields
+}
+
 func RubyMessageType(entity EntityWithParent) string {
 	names := make([]string, 0)
 	outer := entity
@@ -79,9 +96,9 @@ func rubyFieldType(field pgs.Field, mt methodType) string {
 		rubyType = rubyProtoTypeElem(field, t, mt)
 	}
 
-	// initializer fields can be passed a `nil` value for all field types
+	// initializer fields can be passed a `nil` value for all field types.
 	// messages are already wrapped so we skip those
-	if mt == methodTypeInitializer && (t.IsMap() || t.IsRepeated() || t.ProtoType() != pgs.MessageT) {
+	if mt == methodTypeInitializer && t.Field().Descriptor().GetProto3Optional() && (t.IsMap() || t.IsRepeated() || t.ProtoType() != pgs.MessageT) {
 		return fmt.Sprintf("T.nilable(%s)", rubyType)
 	}
 
@@ -114,6 +131,10 @@ func rubyFieldRepeatedType(field pgs.Field, ft pgs.FieldType, mt methodType) str
 }
 
 func RubyFieldValue(field pgs.Field) string {
+	if !field.Descriptor().GetProto3Optional() {
+		return ""
+	}
+
 	t := field.Type()
 	if t.IsMap() {
 		key := rubyMapType(t.Key())
@@ -150,7 +171,13 @@ func rubyProtoTypeElem(field pgs.Field, ft FieldType, mt methodType) string {
 		return "T.any(Symbol, String, Integer)"
 	}
 	if pt == pgs.MessageT {
-		return fmt.Sprintf("T.nilable(%s)", RubyMessageType(ft.Embed()))
+		ruby_type := RubyMessageType(ft.Embed())
+
+		if mt != methodTypeInitializer || field.Descriptor().GetProto3Optional() {
+			return fmt.Sprintf("T.nilable(%s)", ruby_type)
+		} else {
+			return ruby_type
+		}
 	}
 	log.Panicf("Unsupported field type for field: %v\n", field.Name().String())
 	return ""
@@ -224,7 +251,7 @@ func RubyMethodParamType(method pgs.Method) string {
 }
 
 func RubyMethodParamFields(method pgs.Method) []pgs.Field {
-	return method.Input().Fields()
+	return RubySortFieldsForInitializer(method.Input().Fields())
 }
 
 func RubyMethodReturnType(method pgs.Method) string {

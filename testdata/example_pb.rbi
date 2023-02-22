@@ -29,15 +29,19 @@ class Example::Request
 
   sig do
     params(
-      name: T.nilable(String),
+      name: String,
+      test_list: T.any(T::Array[String], ::Google::Protobuf::RepeatedField[String]),
+      example: Example::Request::Example,
       count: T.nilable(Integer),
-      test_list: T.nilable(T.any(T::Array[String], ::Google::Protobuf::RepeatedField[String]))
+      optional_example: T.nilable(Example::Request::Example)
     ).void
   end
   def initialize(
-    name: "",
+    name: ,
+    test_list: ,
+    example: ,
     count: 0,
-    test_list: []
+    optional_example: nil
   )
   end
 
@@ -67,6 +71,10 @@ class Example::Request
   def clear_count
   end
 
+  sig { returns(T::Boolean) }
+  def has_count?
+  end
+
   sig { returns(T.any(T::Array[String], ::Google::Protobuf::RepeatedField[String])) }
   def test_list
   end
@@ -77,6 +85,34 @@ class Example::Request
 
   sig { void }
   def clear_test_list
+  end
+
+  sig { returns(T.nilable(Example::Request::Example)) }
+  def example
+  end
+
+  sig { params(value: T.nilable(Example::Request::Example)).void }
+  def example=(value)
+  end
+
+  sig { void }
+  def clear_example
+  end
+
+  sig { returns(T.nilable(Example::Request::Example)) }
+  def optional_example
+  end
+
+  sig { params(value: T.nilable(Example::Request::Example)).void }
+  def optional_example=(value)
+  end
+
+  sig { void }
+  def clear_optional_example
+  end
+
+  sig { returns(T::Boolean) }
+  def has_optional_example?
   end
 
   sig { params(field: String).returns(T.untyped) }
@@ -119,11 +155,11 @@ class Example::Response
 
   sig do
     params(
-      greeting: T.nilable(String)
+      greeting: String
     ).void
   end
   def initialize(
-    greeting: ""
+    greeting: 
   )
   end
 
@@ -139,6 +175,66 @@ class Example::Response
 
   sig { void }
   def clear_greeting
+  end
+
+  sig { params(field: String).returns(T.untyped) }
+  def [](field)
+  end
+
+  sig { params(field: String, value: T.untyped).void }
+  def []=(field, value)
+  end
+
+  sig { returns(T::Hash[Symbol, T.untyped]) }
+  def to_h
+  end
+end
+
+class Example::Request::Example
+  include ::Google::Protobuf
+  include ::Google::Protobuf::MessageExts
+  extend ::Google::Protobuf::MessageExts::ClassMethods
+
+  sig { params(str: String).returns(Example::Request::Example) }
+  def self.decode(str)
+  end
+
+  sig { params(msg: Example::Request::Example).returns(String) }
+  def self.encode(msg)
+  end
+
+  sig { params(str: String, kw: T.untyped).returns(Example::Request::Example) }
+  def self.decode_json(str, **kw)
+  end
+
+  sig { params(msg: Example::Request::Example, kw: T.untyped).returns(String) }
+  def self.encode_json(msg, **kw)
+  end
+
+  sig { returns(::Google::Protobuf::Descriptor) }
+  def self.descriptor
+  end
+
+  sig do
+    params(
+      field: String
+    ).void
+  end
+  def initialize(
+    field: 
+  )
+  end
+
+  sig { returns(String) }
+  def field
+  end
+
+  sig { params(value: String).void }
+  def field=(value)
+  end
+
+  sig { void }
+  def clear_field
   end
 
   sig { params(field: String).returns(T.untyped) }

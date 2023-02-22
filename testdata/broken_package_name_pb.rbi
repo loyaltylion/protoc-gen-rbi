@@ -29,11 +29,11 @@ class Package2test::Message2test
 
   sig do
     params(
-      field2test: T.nilable(String)
+      field2test: String
     ).void
   end
   def initialize(
-    field2test: ""
+    field2test: 
   )
   end
 

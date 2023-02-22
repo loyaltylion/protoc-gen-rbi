@@ -29,15 +29,19 @@ module Example::Greeter
 
   sig do
     params(
-      name: T.nilable(String),
+      name: String,
+      test_list: T.any(T::Array[String], ::Google::Protobuf::RepeatedField[String]),
+      example: Example::Request::Example,
       count: T.nilable(Integer),
-      test_list: T.nilable(T.any(T::Array[String], ::Google::Protobuf::RepeatedField[String]))
+      optional_example: T.nilable(Example::Request::Example)
     ).returns(Example::Response)
   end
   def self.hello(
-    name: "",
+    name: ,
+    test_list: ,
+    example: ,
     count: 0,
-    test_list: []
+    optional_example: nil
   )
   end
 end

@@ -5,8 +5,14 @@ package example;
 message Request {
   // The name of the person who will be greeted
   string name = 1;
-  int32 count = 2;
+  optional int32 count = 2;
   repeated string test_list = 3;
+  Example example = 4;
+  optional Example optional_example = 5;
+
+  message Example {
+    string field = 1;
+  }
 }
 
 message Response {

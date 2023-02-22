@@ -7,8 +7,13 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   add_file("example.proto", :syntax => :proto3) do
     add_message "example.Request" do
       optional :name, :string, 1
-      optional :count, :int32, 2
+      proto3_optional :count, :int32, 2
       repeated :test_list, :string, 3
+      optional :example, :message, 4, "example.Request.Example"
+      proto3_optional :optional_example, :message, 5, "example.Request.Example"
+    end
+    add_message "example.Request.Example" do
+      optional :field, :string, 1
     end
     add_message "example.Response" do
       optional :greeting, :string, 1
@@ -18,5 +23,6 @@ end
 
 module Example
   Request = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("example.Request").msgclass
+  Request::Example = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("example.Request.Example").msgclass
   Response = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("example.Response").msgclass
 end
