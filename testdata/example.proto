@@ -5,6 +5,8 @@ package example;
 message Request {
   // The name of the person who will be greeted
   string name = 1;
+  int32 count = 2;
+  repeated string test_list = 3;
 }
 
 message Response {
@@ -13,5 +15,5 @@ message Response {
 }
 
 service Greeter {
-  rpc Hello (Request) returns (Response);
+  rpc Hello(Request) returns (Response);
 }

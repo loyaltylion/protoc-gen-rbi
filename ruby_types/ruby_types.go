@@ -98,14 +98,19 @@ func rubyFieldMapType(field pgs.Field, ft pgs.FieldType, mt methodType) string {
 }
 
 func rubyFieldRepeatedType(field pgs.Field, ft pgs.FieldType, mt methodType) string {
+	value := rubyProtoTypeElem(field, ft.Element(), mt)
+
 	// An enumerable/array is not accepted at the setter
 	// See: https://github.com/protocolbuffers/protobuf/issues/4969
 	// See: https://developers.google.com/protocol-buffers/docs/reference/ruby-generated#repeated-fields
 	if mt == methodTypeSetter {
-		return "::Google::Protobuf::RepeatedField"
+		return fmt.Sprintf("::Google::Protobuf::RepeatedField[%s]", value)
 	}
-	value := rubyProtoTypeElem(field, ft.Element(), mt)
-	return fmt.Sprintf("T::Array[%s]", value)
+
+	// not confident if this always returns a `RepeatedField`, so to be safe
+	// we'll return a union. Both types have a `to_a` method that will return
+	// a typed array, so it's easy to just call that as needed
+	return fmt.Sprintf("T.any(T::Array[%s], ::Google::Protobuf::RepeatedField[%s])", value, value)
 }
 
 func RubyFieldValue(field pgs.Field) string {

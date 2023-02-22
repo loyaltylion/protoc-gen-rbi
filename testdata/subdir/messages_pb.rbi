@@ -148,9 +148,9 @@ class Testdata::Subdir::AllTypes
       enum_value: T.nilable(T.any(Symbol, String, Integer)),
       alias_enum_value: T.nilable(T.any(Symbol, String, Integer)),
       nested_value: T.nilable(Testdata::Subdir::IntegerMessage),
-      repeated_nested_value: T.nilable(T::Array[T.nilable(Testdata::Subdir::IntegerMessage)]),
-      repeated_int32_value: T.nilable(T::Array[Integer]),
-      repeated_enum: T.nilable(T::Array[T.any(Symbol, String, Integer)]),
+      repeated_nested_value: T.nilable(T.any(T::Array[T.nilable(Testdata::Subdir::IntegerMessage)], ::Google::Protobuf::RepeatedField[T.nilable(Testdata::Subdir::IntegerMessage)])),
+      repeated_int32_value: T.nilable(T.any(T::Array[Integer], ::Google::Protobuf::RepeatedField[Integer])),
+      repeated_enum: T.nilable(T.any(T::Array[T.any(Symbol, String, Integer)], ::Google::Protobuf::RepeatedField[T.any(Symbol, String, Integer)])),
       inner_value: T.nilable(Testdata::Subdir::AllTypes::InnerMessage),
       inner_nested_value: T.nilable(Testdata::Subdir::IntegerMessage::InnerNestedMessage),
       name: T.nilable(String),
@@ -410,11 +410,11 @@ class Testdata::Subdir::AllTypes
   def clear_nested_value
   end
 
-  sig { returns(T::Array[T.nilable(Testdata::Subdir::IntegerMessage)]) }
+  sig { returns(T.any(T::Array[T.nilable(Testdata::Subdir::IntegerMessage)], ::Google::Protobuf::RepeatedField[T.nilable(Testdata::Subdir::IntegerMessage)])) }
   def repeated_nested_value
   end
 
-  sig { params(value: ::Google::Protobuf::RepeatedField).void }
+  sig { params(value: ::Google::Protobuf::RepeatedField[T.nilable(Testdata::Subdir::IntegerMessage)]).void }
   def repeated_nested_value=(value)
   end
 
@@ -422,11 +422,11 @@ class Testdata::Subdir::AllTypes
   def clear_repeated_nested_value
   end
 
-  sig { returns(T::Array[Integer]) }
+  sig { returns(T.any(T::Array[Integer], ::Google::Protobuf::RepeatedField[Integer])) }
   def repeated_int32_value
   end
 
-  sig { params(value: ::Google::Protobuf::RepeatedField).void }
+  sig { params(value: ::Google::Protobuf::RepeatedField[Integer]).void }
   def repeated_int32_value=(value)
   end
 
@@ -434,11 +434,11 @@ class Testdata::Subdir::AllTypes
   def clear_repeated_int32_value
   end
 
-  sig { returns(T::Array[Symbol]) }
+  sig { returns(T.any(T::Array[Symbol], ::Google::Protobuf::RepeatedField[Symbol])) }
   def repeated_enum
   end
 
-  sig { params(value: ::Google::Protobuf::RepeatedField).void }
+  sig { params(value: ::Google::Protobuf::RepeatedField[T.any(Symbol, String, Integer)]).void }
   def repeated_enum=(value)
   end
 

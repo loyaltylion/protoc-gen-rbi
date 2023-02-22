@@ -29,11 +29,15 @@ class Example::Request
 
   sig do
     params(
-      name: T.nilable(String)
+      name: T.nilable(String),
+      count: T.nilable(Integer),
+      test_list: T.nilable(T.any(T::Array[String], ::Google::Protobuf::RepeatedField[String]))
     ).void
   end
   def initialize(
-    name: ""
+    name: "",
+    count: 0,
+    test_list: []
   )
   end
 
@@ -49,6 +53,30 @@ class Example::Request
 
   sig { void }
   def clear_name
+  end
+
+  sig { returns(Integer) }
+  def count
+  end
+
+  sig { params(value: Integer).void }
+  def count=(value)
+  end
+
+  sig { void }
+  def clear_count
+  end
+
+  sig { returns(T.any(T::Array[String], ::Google::Protobuf::RepeatedField[String])) }
+  def test_list
+  end
+
+  sig { params(value: ::Google::Protobuf::RepeatedField[String]).void }
+  def test_list=(value)
+  end
+
+  sig { void }
+  def clear_test_list
   end
 
   sig { params(field: String).returns(T.untyped) }
