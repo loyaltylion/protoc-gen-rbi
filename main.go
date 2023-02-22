@@ -7,6 +7,7 @@ import (
 	"text/template"
 
 	"github.com/Masterminds/sprig/v3"
+	"google.golang.org/protobuf/types/pluginpb"
 
 	"github.com/coinbase/protoc-gen-rbi/ruby_types"
 
@@ -105,8 +106,10 @@ func (m *rbiModule) willGenerateInvalidRuby(fields []pgs.Field) bool {
 }
 
 func main() {
+	optional := uint64(pluginpb.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL)
 	pgs.Init(
 		pgs.DebugEnv("DEBUG"),
+		pgs.SupportedFeatures(&optional),
 	).RegisterModule(
 		RBI(),
 	).RegisterPostProcessor(
