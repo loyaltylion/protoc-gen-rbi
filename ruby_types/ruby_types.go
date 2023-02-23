@@ -106,12 +106,17 @@ func rubyFieldType(field pgs.Field, mt methodType) string {
 }
 
 func rubyFieldMapType(field pgs.Field, ft pgs.FieldType, mt methodType) string {
-	if mt == methodTypeSetter {
-		return "::Google::Protobuf::Map"
-	}
 	key := rubyProtoTypeElem(field, ft.Key(), mt)
 	value := rubyProtoTypeElem(field, ft.Element(), mt)
-	return fmt.Sprintf("T::Hash[%s, %s]", key, value)
+
+	if mt == methodTypeSetter {
+		return fmt.Sprintf("::Google::Protobuf::Map[%s, %s]", key, value)
+	}
+
+	// not confident this always returns a `Protobuf::Map`, so to be safe we'll
+	// return a union. Both types have a `to_h` method that will return a typed
+	// Hash
+	return fmt.Sprintf("T.any(T::Hash[%s, %s], ::Google::Protobuf::Map[%s, %s])", key, value, key, value)
 }
 
 func rubyFieldRepeatedType(field pgs.Field, ft pgs.FieldType, mt methodType) string {

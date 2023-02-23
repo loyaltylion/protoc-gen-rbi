@@ -155,9 +155,9 @@ class Testdata::Subdir::AllTypes
       inner_nested_value: Testdata::Subdir::IntegerMessage::InnerNestedMessage,
       name: String,
       sub_message: T::Boolean,
-      string_map_value: T::Hash[String, Testdata::Subdir::IntegerMessage],
-      int32_map_value: T::Hash[Integer, Testdata::Subdir::IntegerMessage],
-      enum_map_value: T::Hash[String, T.any(Symbol, String, Integer)],
+      string_map_value: T.any(T::Hash[String, Testdata::Subdir::IntegerMessage], ::Google::Protobuf::Map[String, Testdata::Subdir::IntegerMessage]),
+      int32_map_value: T.any(T::Hash[Integer, Testdata::Subdir::IntegerMessage], ::Google::Protobuf::Map[Integer, Testdata::Subdir::IntegerMessage]),
+      enum_map_value: T.any(T::Hash[String, T.any(Symbol, String, Integer)], ::Google::Protobuf::Map[String, T.any(Symbol, String, Integer)]),
       optional_bool: T.nilable(T::Boolean)
     ).void
   end
@@ -494,11 +494,11 @@ class Testdata::Subdir::AllTypes
   def clear_sub_message
   end
 
-  sig { returns(T::Hash[String, T.nilable(Testdata::Subdir::IntegerMessage)]) }
+  sig { returns(T.any(T::Hash[String, T.nilable(Testdata::Subdir::IntegerMessage)], ::Google::Protobuf::Map[String, T.nilable(Testdata::Subdir::IntegerMessage)])) }
   def string_map_value
   end
 
-  sig { params(value: ::Google::Protobuf::Map).void }
+  sig { params(value: ::Google::Protobuf::Map[String, T.nilable(Testdata::Subdir::IntegerMessage)]).void }
   def string_map_value=(value)
   end
 
@@ -506,11 +506,11 @@ class Testdata::Subdir::AllTypes
   def clear_string_map_value
   end
 
-  sig { returns(T::Hash[Integer, T.nilable(Testdata::Subdir::IntegerMessage)]) }
+  sig { returns(T.any(T::Hash[Integer, T.nilable(Testdata::Subdir::IntegerMessage)], ::Google::Protobuf::Map[Integer, T.nilable(Testdata::Subdir::IntegerMessage)])) }
   def int32_map_value
   end
 
-  sig { params(value: ::Google::Protobuf::Map).void }
+  sig { params(value: ::Google::Protobuf::Map[Integer, T.nilable(Testdata::Subdir::IntegerMessage)]).void }
   def int32_map_value=(value)
   end
 
@@ -518,11 +518,11 @@ class Testdata::Subdir::AllTypes
   def clear_int32_map_value
   end
 
-  sig { returns(T::Hash[String, Symbol]) }
+  sig { returns(T.any(T::Hash[String, Symbol], ::Google::Protobuf::Map[String, Symbol])) }
   def enum_map_value
   end
 
-  sig { params(value: ::Google::Protobuf::Map).void }
+  sig { params(value: ::Google::Protobuf::Map[String, T.any(Symbol, String, Integer)]).void }
   def enum_map_value=(value)
   end
 
