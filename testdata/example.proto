@@ -23,3 +23,9 @@ message Response {
 service Greeter {
   rpc Hello(Request) returns (Response);
 }
+
+enum ExampleState {
+  EXAMPLE_STATE_UNSPECIFIED = 0;
+  EXAMPLE_STATE_PENDING = 1;
+  EXAMPLE_STATE_ACTIVE = 2;
+}

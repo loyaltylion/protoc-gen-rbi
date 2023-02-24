@@ -45,6 +45,7 @@ func (m *rbiModule) InitContext(c pgs.BuildContext) {
 		"rubyInitializerFieldType":     ruby_types.RubyInitializerFieldType,
 		"rubySortFieldsForInitializer": ruby_types.RubySortFieldsForInitializer,
 		"rubyFieldValue":               ruby_types.RubyFieldValue,
+		"rubyEnumValueName":            ruby_types.RubyEnumValueName,
 		"rubyMethodParamType":          ruby_types.RubyMethodParamType,
 		"rubyMethodParamFields":        ruby_types.RubyMethodParamFields,
 		"rubyMethodReturnType":         ruby_types.RubyMethodReturnType,
@@ -202,7 +203,7 @@ class {{ rubyMessageType . }}
 end
 {{ end }}{{ range .AllEnums }}
 module {{ rubyMessageType . }}{{ range .Values }}
-  self::{{ .Name }} = T.let({{ .Value }}, Integer){{ end }}
+  self::{{ rubyEnumValueName . }} = T.let({{ .Value }}, Integer){{ end }}
 
   sig { params(value: Integer).returns(T.nilable(Symbol)) }
   def self.lookup(value)

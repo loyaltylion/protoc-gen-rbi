@@ -59,6 +59,22 @@ func RubySortFieldsForInitializer(fields []pgs.Field) []pgs.Field {
 	return sorted_fields
 }
 
+func RubyEnumValueName(field pgs.EnumValue) string {
+	// it's a good convention to prefix enum value names with the enum name, as
+	// describe here: https://docs.buf.build/lint/rules#enum_value_prefix
+	//
+	// this can result in unwieldy enum types in Ruby though. because enum values
+	// are enclosed in a module anyway, we can remove this prefix without issue
+	name := strings.Replace(
+		field.Name().String(),
+		field.Enum().Name().ScreamingSnakeCase().String()+"_",
+		"",
+		1,
+	)
+
+	return name
+}
+
 func RubyMessageType(entity EntityWithParent) string {
 	names := make([]string, 0)
 	outer := entity
