@@ -11,6 +11,11 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       repeated :test_list, :string, 3
       optional :example, :message, 4, "example.Request.Example"
       proto3_optional :optional_example, :message, 5, "example.Request.Example"
+      map :example_map, :string, :string, 6
+      oneof :lookup do
+        optional :internal_id, :int32, 7
+        optional :external_id, :int32, 8
+      end
     end
     add_message "example.Request.Example" do
       optional :field, :string, 1

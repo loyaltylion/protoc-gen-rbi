@@ -153,11 +153,11 @@ class Testdata::Subdir::AllTypes
       repeated_enum: T.any(T::Array[T.any(Symbol, String, Integer)], ::Google::Protobuf::RepeatedField[T.any(Symbol, String, Integer)]),
       inner_value: Testdata::Subdir::AllTypes::InnerMessage,
       inner_nested_value: Testdata::Subdir::IntegerMessage::InnerNestedMessage,
-      name: String,
-      sub_message: T::Boolean,
       string_map_value: T.any(T::Hash[String, Testdata::Subdir::IntegerMessage], ::Google::Protobuf::Map[String, Testdata::Subdir::IntegerMessage]),
       int32_map_value: T.any(T::Hash[Integer, Testdata::Subdir::IntegerMessage], ::Google::Protobuf::Map[Integer, Testdata::Subdir::IntegerMessage]),
       enum_map_value: T.any(T::Hash[String, T.any(Symbol, String, Integer)], ::Google::Protobuf::Map[String, T.any(Symbol, String, Integer)]),
+      name: T.nilable(String),
+      sub_message: T.nilable(T::Boolean),
       optional_bool: T.nilable(T::Boolean)
     ).void
   end
@@ -185,11 +185,11 @@ class Testdata::Subdir::AllTypes
     repeated_enum: ,
     inner_value: ,
     inner_nested_value: ,
-    name: ,
-    sub_message: ,
     string_map_value: ,
     int32_map_value: ,
     enum_map_value: ,
+    name: "",
+    sub_message: false,
     optional_bool: false
   )
   end
@@ -470,11 +470,11 @@ class Testdata::Subdir::AllTypes
   def clear_inner_nested_value
   end
 
-  sig { returns(String) }
+  sig { returns(T.nilable(String)) }
   def name
   end
 
-  sig { params(value: String).void }
+  sig { params(value: T.nilable(String)).void }
   def name=(value)
   end
 
@@ -482,11 +482,11 @@ class Testdata::Subdir::AllTypes
   def clear_name
   end
 
-  sig { returns(T::Boolean) }
+  sig { returns(T.nilable(T::Boolean)) }
   def sub_message
   end
 
-  sig { params(value: T::Boolean).void }
+  sig { params(value: T.nilable(T::Boolean)).void }
   def sub_message=(value)
   end
 

@@ -9,6 +9,12 @@ message Request {
   repeated string test_list = 3;
   Example example = 4;
   optional Example optional_example = 5;
+  map<string, string> example_map = 6;
+
+  oneof lookup {
+    int32 internal_id = 7;
+    int32 external_id = 8;
+  }
 
   message Example {
     string field = 1;

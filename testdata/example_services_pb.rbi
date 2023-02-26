@@ -32,16 +32,22 @@ module Example::Greeter
       name: String,
       test_list: T.any(T::Array[String], ::Google::Protobuf::RepeatedField[String]),
       example: Example::Request::Example,
+      example_map: T.any(T::Hash[String, String], ::Google::Protobuf::Map[String, String]),
       count: T.nilable(Integer),
-      optional_example: T.nilable(Example::Request::Example)
+      optional_example: T.nilable(Example::Request::Example),
+      internal_id: T.nilable(Integer),
+      external_id: T.nilable(Integer)
     ).returns(Example::Response)
   end
   def self.hello(
     name: ,
     test_list: ,
     example: ,
+    example_map: ,
     count: 0,
-    optional_example: nil
+    optional_example: nil,
+    internal_id: 0,
+    external_id: 0
   )
   end
 end

@@ -3,7 +3,6 @@ package ruby_types
 import (
 	"fmt"
 	"log"
-	"sort"
 	"strings"
 
 	pgs "github.com/lyft/protoc-gen-star"
@@ -46,17 +45,18 @@ func RubyPackage(file pgs.File) string {
 // Sort fields for use in an initializer. This will place optional fields at
 // the end, which is required by Ruby
 func RubySortFieldsForInitializer(fields []pgs.Field) []pgs.Field {
-	sorted_fields := make([]pgs.Field, len(fields))
-	copy(sorted_fields, fields)
+	required_fields := make([]pgs.Field, 0)
+	optional_fields := make([]pgs.Field, 0)
 
-	sort.Slice(sorted_fields, func(i, j int) bool {
-		a := sorted_fields[i]
-		b := sorted_fields[j]
+	for _, field := range fields {
+		if field.Descriptor().GetProto3Optional() || field.InRealOneOf() {
+			optional_fields = append(optional_fields, field)
+		} else {
+			required_fields = append(required_fields, field)
+		}
+	}
 
-		return b.Descriptor().GetProto3Optional() && !a.Descriptor().GetProto3Optional()
-	})
-
-	return sorted_fields
+	return append(required_fields, optional_fields...)
 }
 
 func RubyEnumValueName(field pgs.EnumValue) string {
@@ -112,9 +112,17 @@ func rubyFieldType(field pgs.Field, mt methodType) string {
 		rubyType = rubyProtoTypeElem(field, t, mt)
 	}
 
-	// initializer fields can be passed a `nil` value for all field types.
-	// messages are already wrapped so we skip those
-	if mt == methodTypeInitializer && t.Field().Descriptor().GetProto3Optional() && (t.IsMap() || t.IsRepeated() || t.ProtoType() != pgs.MessageT) {
+	inOneOf := t.Field().InRealOneOf()
+	isOptionalInitilizer := mt == methodTypeInitializer && t.Field().Descriptor().GetProto3Optional()
+
+	// optional initializers can always be nilable
+	//
+	// members of a oneOf should always be nil; there's no way to enforce passing
+	// one of them with the way that the Ruby code generation currently works,
+	// though it would be nice if there were and then we could pass it as a
+	// non-nilable field with a `T.any` type
+	if (inOneOf || isOptionalInitilizer) &&
+		(t.IsMap() || t.IsRepeated() || t.ProtoType() != pgs.MessageT) {
 		return fmt.Sprintf("T.nilable(%s)", rubyType)
 	}
 
@@ -152,7 +160,7 @@ func rubyFieldRepeatedType(field pgs.Field, ft pgs.FieldType, mt methodType) str
 }
 
 func RubyFieldValue(field pgs.Field) string {
-	if !field.Descriptor().GetProto3Optional() {
+	if !field.Descriptor().GetProto3Optional() && !field.InRealOneOf() {
 		return ""
 	}
 

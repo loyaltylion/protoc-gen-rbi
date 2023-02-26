@@ -32,16 +32,22 @@ class Example::Request
       name: String,
       test_list: T.any(T::Array[String], ::Google::Protobuf::RepeatedField[String]),
       example: Example::Request::Example,
+      example_map: T.any(T::Hash[String, String], ::Google::Protobuf::Map[String, String]),
       count: T.nilable(Integer),
-      optional_example: T.nilable(Example::Request::Example)
+      optional_example: T.nilable(Example::Request::Example),
+      internal_id: T.nilable(Integer),
+      external_id: T.nilable(Integer)
     ).void
   end
   def initialize(
     name: ,
     test_list: ,
     example: ,
+    example_map: ,
     count: 0,
-    optional_example: nil
+    optional_example: nil,
+    internal_id: 0,
+    external_id: 0
   )
   end
 
@@ -113,6 +119,46 @@ class Example::Request
 
   sig { returns(T::Boolean) }
   def has_optional_example?
+  end
+
+  sig { returns(T.any(T::Hash[String, String], ::Google::Protobuf::Map[String, String])) }
+  def example_map
+  end
+
+  sig { params(value: ::Google::Protobuf::Map[String, String]).void }
+  def example_map=(value)
+  end
+
+  sig { void }
+  def clear_example_map
+  end
+
+  sig { returns(T.nilable(Integer)) }
+  def internal_id
+  end
+
+  sig { params(value: T.nilable(Integer)).void }
+  def internal_id=(value)
+  end
+
+  sig { void }
+  def clear_internal_id
+  end
+
+  sig { returns(T.nilable(Integer)) }
+  def external_id
+  end
+
+  sig { params(value: T.nilable(Integer)).void }
+  def external_id=(value)
+  end
+
+  sig { void }
+  def clear_external_id
+  end
+
+  sig { returns(T.nilable(Symbol)) }
+  def lookup
   end
 
   sig { params(field: String).returns(T.untyped) }
