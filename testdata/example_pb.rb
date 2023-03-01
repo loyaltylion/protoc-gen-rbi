@@ -15,7 +15,11 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       oneof :lookup do
         optional :internal_id, :int32, 7
         optional :external_id, :int32, 8
+        optional :resolver, :message, 9, "example.Request.Resolver"
       end
+    end
+    add_message "example.Request.Resolver" do
+      optional :host, :string, 1
     end
     add_message "example.Request.Example" do
       optional :field, :string, 1
@@ -33,6 +37,7 @@ end
 
 module Example
   Request = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("example.Request").msgclass
+  Request::Resolver = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("example.Request.Resolver").msgclass
   Request::Example = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("example.Request.Example").msgclass
   Response = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("example.Response").msgclass
   ExampleState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("example.ExampleState").enummodule

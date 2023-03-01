@@ -113,7 +113,7 @@ func rubyFieldType(field pgs.Field, mt methodType) string {
 	}
 
 	inOneOf := t.Field().InRealOneOf()
-	isOptionalInitilizer := mt == methodTypeInitializer && t.Field().Descriptor().GetProto3Optional()
+	isOptionalInitializer := mt == methodTypeInitializer && t.Field().Descriptor().GetProto3Optional()
 
 	// optional initializers can always be nilable
 	//
@@ -121,7 +121,7 @@ func rubyFieldType(field pgs.Field, mt methodType) string {
 	// one of them with the way that the Ruby code generation currently works,
 	// though it would be nice if there were and then we could pass it as a
 	// non-nilable field with a `T.any` type
-	if (inOneOf || isOptionalInitilizer) &&
+	if (inOneOf || isOptionalInitializer) &&
 		(t.IsMap() || t.IsRepeated() || t.ProtoType() != pgs.MessageT) {
 		return fmt.Sprintf("T.nilable(%s)", rubyType)
 	}
@@ -202,7 +202,7 @@ func rubyProtoTypeElem(field pgs.Field, ft FieldType, mt methodType) string {
 	if pt == pgs.MessageT {
 		ruby_type := RubyMessageType(ft.Embed())
 
-		if mt != methodTypeInitializer || field.Descriptor().GetProto3Optional() {
+		if mt != methodTypeInitializer || field.Descriptor().GetProto3Optional() || field.InRealOneOf() {
 			return fmt.Sprintf("T.nilable(%s)", ruby_type)
 		} else {
 			return ruby_type

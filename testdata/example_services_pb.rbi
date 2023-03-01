@@ -37,7 +37,8 @@ module Example::Greeter
       count: T.nilable(Integer),
       optional_example: T.nilable(Example::Request::Example),
       internal_id: T.nilable(Integer),
-      external_id: T.nilable(Integer)
+      external_id: T.nilable(Integer),
+      resolver: T.nilable(Example::Request::Resolver)
     ).returns(Example::Response)
   end
   def self.hello(
@@ -48,7 +49,8 @@ module Example::Greeter
     count: 0,
     optional_example: nil,
     internal_id: 0,
-    external_id: 0
+    external_id: 0,
+    resolver: nil
   )
   end
 end

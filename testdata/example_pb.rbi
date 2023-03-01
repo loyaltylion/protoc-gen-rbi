@@ -37,7 +37,8 @@ class Example::Request
       count: T.nilable(Integer),
       optional_example: T.nilable(Example::Request::Example),
       internal_id: T.nilable(Integer),
-      external_id: T.nilable(Integer)
+      external_id: T.nilable(Integer),
+      resolver: T.nilable(Example::Request::Resolver)
     ).void
   end
   def initialize(
@@ -48,7 +49,8 @@ class Example::Request
     count: 0,
     optional_example: nil,
     internal_id: 0,
-    external_id: 0
+    external_id: 0,
+    resolver: nil
   )
   end
 
@@ -158,6 +160,18 @@ class Example::Request
   def clear_external_id
   end
 
+  sig { returns(T.nilable(Example::Request::Resolver)) }
+  def resolver
+  end
+
+  sig { params(value: T.nilable(Example::Request::Resolver)).void }
+  def resolver=(value)
+  end
+
+  sig { void }
+  def clear_resolver
+  end
+
   sig { returns(T.nilable(Symbol)) }
   def lookup
   end
@@ -222,6 +236,66 @@ class Example::Response
 
   sig { void }
   def clear_greeting
+  end
+
+  sig { params(field: String).returns(T.untyped) }
+  def [](field)
+  end
+
+  sig { params(field: String, value: T.untyped).void }
+  def []=(field, value)
+  end
+
+  sig { returns(T::Hash[Symbol, T.untyped]) }
+  def to_h
+  end
+end
+
+class Example::Request::Resolver
+  include ::Google::Protobuf
+  include ::Google::Protobuf::MessageExts
+  extend ::Google::Protobuf::MessageExts::ClassMethods
+
+  sig { params(str: String).returns(Example::Request::Resolver) }
+  def self.decode(str)
+  end
+
+  sig { params(msg: Example::Request::Resolver).returns(String) }
+  def self.encode(msg)
+  end
+
+  sig { params(str: String, kw: T.untyped).returns(Example::Request::Resolver) }
+  def self.decode_json(str, **kw)
+  end
+
+  sig { params(msg: Example::Request::Resolver, kw: T.untyped).returns(String) }
+  def self.encode_json(msg, **kw)
+  end
+
+  sig { returns(::Google::Protobuf::Descriptor) }
+  def self.descriptor
+  end
+
+  sig do
+    params(
+      host: String
+    ).void
+  end
+  def initialize(
+    host: 
+  )
+  end
+
+  sig { returns(String) }
+  def host
+  end
+
+  sig { params(value: String).void }
+  def host=(value)
+  end
+
+  sig { void }
+  def clear_host
   end
 
   sig { params(field: String).returns(T.untyped) }
