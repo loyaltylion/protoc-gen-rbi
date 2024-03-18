@@ -27,11 +27,6 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     add_message "example.Response" do
       optional :greeting, :string, 1
     end
-    add_enum "example.ExampleState" do
-      value :EXAMPLE_STATE_UNSPECIFIED, 0
-      value :EXAMPLE_STATE_PENDING, 1
-      value :EXAMPLE_STATE_ACTIVE, 2
-    end
   end
 end
 
@@ -40,5 +35,4 @@ module Example
   Request::Resolver = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("example.Request.Resolver").msgclass
   Request::Example = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("example.Request.Example").msgclass
   Response = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("example.Response").msgclass
-  ExampleState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("example.ExampleState").enummodule
 end

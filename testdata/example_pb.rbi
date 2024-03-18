@@ -370,21 +370,3 @@ class Example::Request::Example
   def to_h
   end
 end
-
-module Example::ExampleState
-  self::UNSPECIFIED = T.let(0, Integer)
-  self::PENDING = T.let(1, Integer)
-  self::ACTIVE = T.let(2, Integer)
-
-  sig { params(value: Integer).returns(T.nilable(Symbol)) }
-  def self.lookup(value)
-  end
-
-  sig { params(value: Symbol).returns(T.nilable(Integer)) }
-  def self.resolve(value)
-  end
-
-  sig { returns(::Google::Protobuf::EnumDescriptor) }
-  def self.descriptor
-  end
-end
